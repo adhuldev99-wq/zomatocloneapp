@@ -37,6 +37,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   country_code_picker: ^3.4.1
   pinput: ^6.0.2
+  lottie: ^3.3.3
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
@@ -83,6 +84,14 @@ flutter:
     - assets/icons/play_store_512.png
     - assets/images/splogo.png
     - assets/images/image2.png
+    - assets/animations/bell_notification.json.json
+    - assets/animations/Delivering_pizzas.json
+    - assets/animations/offer.json.json
+    - assets/animations/shoppingbag.json
+    - assets/images/google.png
+
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

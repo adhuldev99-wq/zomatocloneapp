@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:zomato/auth/login_screen.dart';
 import 'package:zomato/screens/notification_screen.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -13,37 +14,31 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  late Timer _countdownTimer;
-  int _remainingSeconds = 30;
-
-  @override
-  void initState() {
-    super.initState();
-    _startCountdown();
-  }
-
-  void _startCountdown() {
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds == 0) {
-        timer.cancel();
-      } else {
+  int _secondsRemaining = 20;
+  Timer? _timer;
+  void startTimer() {
+    _secondsRemaining = 20;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_secondsRemaining > 0) {
         setState(() {
-          _remainingSeconds--;
+          _secondsRemaining--;
         });
+      } else {
+        timer.cancel();
       }
     });
   }
 
   @override
-  void dispose() {
-    _countdownTimer.cancel();
-    super.dispose();
+  void initState() {
+    super.initState();
+    startTimer();
   }
 
-  String get _timerLabel {
-    final minutes = (_remainingSeconds ~/ 60).toString().padLeft(2, '0');
-    final seconds = (_remainingSeconds % 60).toString().padLeft(2, '0');
-    return '$minutes:$seconds';
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -54,7 +49,6 @@ class _OtpScreenState extends State<OtpScreen> {
           "OTP Verification",
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
-        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -75,17 +69,6 @@ class _OtpScreenState extends State<OtpScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  _remainingSeconds > 0
-                      ? 'Resend OTP in $_timerLabel'
-                      : 'You can resend the OTP now',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFE23744),
-                  ),
-                ),
                 const SizedBox(height: 30),
                 Pinput(
                   length: 6,
@@ -132,6 +115,46 @@ class _OtpScreenState extends State<OtpScreen> {
                       ).showSnackBar(SnackBar(content: Text("Invalid OTP")));
                     }
                   },
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: _secondsRemaining > 0
+                      ? Text(
+                          "Didn't get the OTP?, Resend SMS in ${_secondsRemaining}s",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            startTimer(); // restart time
+                          },
+                          child: Text(
+                            "Resend OTP",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                ),
+                const SizedBox(height: 70),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Go back to login methods",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:zomato/screens/auth/login_screen.dart';
+import 'package:zomato/auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,12 +14,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 4), () {
-      Navigator.push(
-        context,
+    Timer(const Duration(seconds: 4), () {
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return LoginScreen();
+            return const LoginScreen();
           },
         ),
       );
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Color(0xFFE23744),
       body: Center(
         child: Column(
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/images/splogo.png", width: 240),
             Row(

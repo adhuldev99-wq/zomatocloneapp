@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:zomato/screens/auth/otp_screen.dart';
+import 'package:zomato/auth/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
+  bool ischecked = false;
 
   @override
   void dispose() {
@@ -77,24 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Divider(thickness: 1, color: Colors.grey),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "Log in or Sign up",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Divider(thickness: 1, color: Colors.grey),
-                        ),
-                      ],
+                    Text(
+                      "Log in or Sign up",
+                      style: TextStyle(color: Colors.black),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -141,13 +127,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          checkColor: Colors.white,
+                          activeColor: Colors.red,
+                          value: ischecked,
+                          onChanged: (value) {
+                            setState(() {
+                              ischecked = value!;
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        Text("Remember my login for faster sign-in"),
+                      ],
+                    ),
                     SizedBox(
                       height: 50,
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFE23744),
+                          backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -156,10 +158,53 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           phonevalidation();
                         },
-                        child: Text("Continue"),
+                        child: Text("Continue", style: TextStyle(fontSize: 20)),
                       ),
                     ),
                     const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            //google login
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade200),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset("assets/images/google.png"),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () {
+                            //email login
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade200),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(Icons.email, color: Colors.red),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text("By continuing, you agree to our"),
+                    Text("Terms of services privacy policy content policy"),
                   ],
                 ),
               ),
